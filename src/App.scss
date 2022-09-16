@@ -1,0 +1,253 @@
+@import './helper.scss';
+
+:root {
+  --vh: 1vh;
+}
+
+* {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: Quicksand, sans-serif;
+  background-color: color(main);
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.App {
+  width: 100vw;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  @include flex-center;
+}
+
+.subtitle,
+.menu__prompt {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  font-size: 1.7rem;
+  color: color(secondary);
+  font-family: inherit;
+  text-transform: uppercase;
+  font-weight: weight(bold);
+  grid-column: span 2;
+}
+
+.game {
+  height: 100%;
+  max-height: 62rem;
+  min-height: 30rem;
+  background-color: color(secondary);
+  @include flex-center;
+  @include box-shadow(0.8, 0.8, 3, 0.3);
+
+  @media (orientation: portrait) {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content 1fr;
+    max-height: unset;
+    height: 90%;
+    width: 90%;
+    max-width: 55rem;
+    min-width: 20rem;
+  }
+}
+
+.board {
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  padding: 5rem;
+
+  &__container {
+    aspect-ratio: 1 / 1;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    position: relative;
+  }
+
+  .winner-line {
+    width: 0.5rem;
+    height: 100%;
+    position: absolute;
+    background-color: green;
+    border-radius: 100vw;
+    transform-origin: 0 0;
+    display: block;
+    scale: 1 0;
+    outline: solid 1rem color(secondary);
+  }
+
+  @media (orientation: portrait) {
+    width: 100%;
+    height: auto;
+    padding: 3rem;
+  }
+}
+
+.menu {
+  aspect-ratio: 0.5 / 1;
+  height: 100%;
+  background-color: color(contrast);
+  padding: 5rem;
+  display: grid;
+  grid-template-rows: max-content 1fr max-content;
+  grid-auto-rows: 1fr;
+  grid-auto-columns: 1fr;
+  font-size: 1.5rem;
+
+  h1 {
+    color: color(secondary);
+    text-align: center;
+    text-transform: uppercase;
+    grid-column: span 2;
+  }
+
+  @media (orientation: portrait) {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: unset;
+    font-size: 1rem;
+    padding: 1.5rem 5rem;
+
+    h1 {
+      margin-bottom: 2rem;
+    }
+  }
+
+  &__block {
+    width: 100%;
+    height: 100%;
+    @include flex-center;
+    flex-direction: column;
+    gap: 5%;
+    grid-column: span 2;
+
+    @media (orientation: portrait) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: max-content 1fr max-content;
+    }
+  }
+
+  &__btn {
+    width: 100%;
+    height: 6rem;
+    background: linear-gradient(to right, color(secondary), white, color(secondary));
+    border-radius: 0.5rem;
+    @include box-shadow(0.5);
+    font-family: inherit;
+    text-transform: uppercase;
+    font-weight: weight(bold);
+    color: color(contrast);
+    font-size: 1.5rem;
+    grid-row: 2;
+
+    &:active {
+      scale: 0.8;
+    }
+  }
+
+  &__prompt {
+    font-size: 2rem;
+  }
+}
+
+$color: color(contrast);
+
+.square {
+  width: 100%;
+  height: 100%;
+  $size: 0.4rem;
+  box-sizing: content-box;
+  @include flex-center;
+
+  &[data-square='5'] {
+    border: $size solid $color;
+  }
+
+  &[data-square='2'],
+  &[data-square='8'] {
+    border-left: $size solid $color;
+    border-right: $size solid $color;
+  }
+
+  &[data-square='4'],
+  &[data-square='6'] {
+    border-top: $size solid $color;
+    border-bottom: $size solid $color;
+  }
+
+  &.disabled {
+    pointer-events: none;
+  }
+}
+
+$thick: 100vh * 0.017;
+$newThick: 100vw * 0.01;
+$size: 60%;
+
+.naughts {
+  width: $size;
+  aspect-ratio: 1 / 1;
+  pointer-events: none;
+  border: solid $thick $color;
+  display: block;
+  border-radius: 50%;
+
+  @media (orientation: portrait) {
+    border: solid $newThick $color;
+  }
+}
+
+.crosses {
+  pointer-events: none;
+  width: $size;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+
+  %cross {
+    grid-column: 1;
+    grid-row: 1;
+    display: block;
+    background-color: $color;
+    rotate: 45deg;
+    border-radius: 100vw;
+  }
+
+  .ver {
+    @extend %cross;
+    width: $thick;
+    height: 100%;
+
+    @media (orientation: portrait) {
+      width: $newThick;
+    }
+  }
+
+  .hor {
+    @extend %cross;
+    height: $thick;
+    width: 100%;
+
+    @media (orientation: portrait) {
+      height: $newThick;
+    }
+  }
+}

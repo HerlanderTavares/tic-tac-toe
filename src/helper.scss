@@ -1,0 +1,77 @@
+/****************************************
+     VARIABLES
+****************************************/
+$font-weights: (
+  "light": 300,
+  "regular": 400,
+  "medium": 500,
+  "semibold": 600,
+  "bold": 700,
+);
+
+$colors: (
+  "main": #f0e68c,
+  "secondary": #faf7d9,
+  "contrast": #555555,
+);
+
+$header-pad: 12% 2rem 5%;
+
+/****************************************
+     FUNCTIONS & MIXINS
+****************************************/
+@function weight($weight-name) {
+  @return map-get($font-weights, $weight-name);
+}
+
+@function color($color-name) {
+  @return map-get($colors, $color-name);
+}
+
+@mixin query($wid_hei: width) {
+  @media (max-#{$wid_hei}: 43.75em) {
+    @content;
+  }
+}
+
+@mixin flex-center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex($hor: null, $ver: null, $dir: null) {
+  display: flex;
+
+  @if $hor != null {
+    justify-content: $hor;
+  }
+
+  @if $ver != null {
+    align-items: $ver;
+  }
+
+  @if $dir != null {
+    flex-direction: $dir;
+  }
+}
+
+@mixin box-shadow($x: 1, $y: $x, $blur: $x, $opacity: $x) {
+  @if $x == remove {
+    box-shadow: 0 0 0 rgba(black, 0);
+  } @else {
+    box-shadow: calc($x * 1rem)
+      calc($y * 1rem)
+      calc($blur * 1rem)
+      rgba(0, 0, 0, $opacity);
+  }
+}
+
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
